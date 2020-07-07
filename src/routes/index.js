@@ -31,6 +31,7 @@ const icons = {
 
 const Routes = () => (
   <Tab.Navigator
+    initialRouteName="Wallet"
     screenOptions={({ route, navigation }) => ({
       tabBarIcon: ({ color, size, focused }) => {
         if (route.name === 'Pay') {
