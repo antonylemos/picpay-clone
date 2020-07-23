@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Switch } from 'react-native';
 import {
   Feather,
@@ -39,74 +39,96 @@ import {
 
 import creditCard from '../../images/credit-card.png';
 
-const Wallet = () => (
-  <Container>
-    <Header colors={['#52e78c', '#1ab563']}>
-      <HeaderContent>
-        <Title>Saldo PicPay</Title>
+const Wallet = () => {
+  const [isVisible, setIsVisible] = useState(true);
+  const [useBalance, setUseBalance] = useState(true);
 
-        <BalanceContainer>
-          <Value>
-            R$ <Bold>0,00</Bold>
-          </Value>
+  const hangleToggleVisibility = useCallback(() => {
+    setIsVisible(prevState => !prevState);
+  }, []);
 
-          <EyeButton>
-            <Feather name="eye" size={28} color="#fff" />
-          </EyeButton>
-        </BalanceContainer>
+  const hangleToggleUseBalance = useCallback(() => {
+    setUseBalance(prevState => !prevState);
+  }, []);
 
-        <Info>Seu saldo está rendendo 100% do CDI</Info>
+  return (
+    <Container>
+      <Header
+        colors={
+          useBalance
+            ? ['#52e78c', '#1ab563']
+            : ['#d3d3d3', '#868686']
+        }
+      >
+        <HeaderContent>
+          <Title>Saldo PicPay</Title>
 
-        <Actions>
-          <Action>
-            <MaterialCommunityIcons name="cash" color="#fff" size={28} />
-            <ActionLabel>Adicionar</ActionLabel>
-          </Action>
+          <BalanceContainer>
+            <Value>
+              R$ <Bold>{isVisible ? '0,00' : '----'}</Bold>
+            </Value>
 
-          <Action>
-            <FontAwesome name="bank" color="#fff" size={20} />
-            <ActionLabel>Retirar</ActionLabel>
-          </Action>
-        </Actions>
-      </HeaderContent>
-    </Header>
+            <EyeButton onPress={hangleToggleVisibility}>
+              <Feather name={isVisible ? 'eye' : 'eye-off'} size={28} color="#fff" />
+            </EyeButton>
+          </BalanceContainer>
 
-    <UseBalance>
-      <UseBalanceTitle>Usar saldo ao pagar</UseBalanceTitle>
+          <Info>Seu saldo está rendendo 100% do CDI</Info>
 
-      <Switch />
-    </UseBalance>
+          <Actions>
+            <Action>
+              <MaterialCommunityIcons name="cash" color="#fff" size={28} />
+              <ActionLabel>Adicionar</ActionLabel>
+            </Action>
 
-    <PaymentMethods>
-      <PaymentMethodsTitle>Formas de pagamento</PaymentMethodsTitle>
+            <Action>
+              <FontAwesome name="bank" color="#fff" size={20} />
+              <ActionLabel>Retirar</ActionLabel>
+            </Action>
+          </Actions>
+        </HeaderContent>
+      </Header>
 
-      <Card>
-        <CardBody>
-          <CardDetails>
-            <CardTitle>Cadastre seu cartão de crédito</CardTitle>
-            <CardInfo>
-              Cadastre seu cartão de crédito para poder fazer pagamentos mesmo
-              quando não tiver saldo no seu PicPay.
-            </CardInfo>
-          </CardDetails>
+      <UseBalance>
+        <UseBalanceTitle>Usar saldo ao pagar</UseBalanceTitle>
 
-          <Picture source={creditCard} resizeMode="contain" />
-        </CardBody>
+        <Switch
+          value={useBalance}
+          onValueChange={hangleToggleUseBalance}
+        />
+      </UseBalance>
 
-        <AddButton>
-          <AntDesign name="pluscircleo" size={30} color="#0db060" />
-          <AddLabel>Adicionar cartão de crédito</AddLabel>
-        </AddButton>
-      </Card>
+      <PaymentMethods>
+        <PaymentMethodsTitle>Formas de pagamento</PaymentMethodsTitle>
 
-      <UseTicketContainer>
-        <UseTicketButton>
-          <MaterialCommunityIcons name="ticket-outline" size={20} color="#0db060" />
-          <UseTicketLabel>Usar código promocional</UseTicketLabel>
-        </UseTicketButton>
-      </UseTicketContainer>
-    </PaymentMethods>
-  </Container>
-);
+        <Card>
+          <CardBody>
+            <CardDetails>
+              <CardTitle>Cadastre seu cartão de crédito</CardTitle>
+              <CardInfo>
+                Cadastre seu cartão de crédito para poder fazer pagamentos mesmo
+                quando não tiver saldo no seu PicPay.
+              </CardInfo>
+            </CardDetails>
+
+            <Picture source={creditCard} resizeMode="contain" />
+          </CardBody>
+
+          <AddButton>
+            <AntDesign name="pluscircleo" size={30} color="#0db060" />
+            <AddLabel>Adicionar cartão de crédito</AddLabel>
+          </AddButton>
+        </Card>
+
+        <UseTicketContainer>
+          <UseTicketButton>
+            <MaterialCommunityIcons name="ticket-outline" size={20} color="#0db060" />
+            <UseTicketLabel>Usar código promocional</UseTicketLabel>
+          </UseTicketButton>
+        </UseTicketContainer>
+      </PaymentMethods>
+    </Container>
+  );
+};
 
 export default Wallet;
