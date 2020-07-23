@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch } from 'react-native';
 import { Feather, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 
 import {
@@ -14,6 +15,8 @@ import {
   Actions,
   Action,
   ActionLabel,
+  UseBalance,
+  UseBalanceTitle,
 } from './styles';
 
 const Wallet = () => (
@@ -47,6 +50,12 @@ const Wallet = () => (
         </Actions>
       </HeaderContent>
     </Header>
+
+    <UseBalance>
+      <UseBalanceTitle>Usar saldo ao pagar</UseBalanceTitle>
+
+      <Switch />
+    </UseBalance>
   </Container>
 );
 
